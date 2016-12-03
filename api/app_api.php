@@ -2,7 +2,7 @@
 session_start();
 // This is the Snackathon API for Orders
 $mode = $_REQUEST['mode'];
-$possible_modes = array('register', 'login_app', 'logout_app', 'get_restaurants', 'get_restaurant_info', 'submit_order');
+$possible_modes = array('register', 'login_app', 'logout_app', 'get_restaurants', 'get_restaurant_info', 'submit_order', 'rest_add_item', 'rest_delete_item', 'rest_get_my_items', 'rest_change_item');
 function register($db, $input)
 {
 	
@@ -78,8 +78,92 @@ function get_restaurant_info($db, $input)
 }
 function submit_order($db, $input)
 {
-	
+
 }
+function rest_add_item($db, $input)
+{
+	if(!isset($_SESSION['rest_id']))
+	{
+		return array("status" => 1, "error" => "Missing Restaurant ID");
+	}
+	if(!isset($input['cat']))
+	{
+		return array("status" => 1, "error" => "Missing Catagory");
+	}
+	$res = mysqli_query($db, "CALL add_restaurant_menu_item(\"" . $_SESSION['rest_id'] . "\", \"" . $input['cat'] . "\")", MYSQLI_USE_RESULT);
+	$menu_items = array();
+	while ($row = $res->fetch_object()){}
+	return array("status" => 0, "result" => $row);
+}
+function rest_delete_item($db, $input)
+{
+	if(!isset($_SESSION['rest_id']))
+	{
+		return array("status" => 1, "error" => "Missing Restaurant ID");
+	}
+	if(!isset($input['item_id']))
+	{
+		return array("status" => 1, "error" => "Missing Item ID");
+	}
+	$res = mysqli_query($db, "CALL delete_restaurant_menu_item(\"" . $_SESSION['rest_id'] . "\", \"" . $input['item_id'] . "\")", MYSQLI_USE_RESULT);
+	$menu_items = array();
+	while ($row = $res->fetch_object()){}
+	return array("status" => 0, "result" => $row);
+}
+function rest_change_item($db, $input)
+{
+	if(!isset($_SESSION['rest_id']))
+	{
+		return array("status" => 1, "error" => "Missing Restaurant ID");
+	}
+	if(!isset($input['item_id']))
+	{
+		return array("status" => 1, "error" => "Missing Item ID");
+	}
+	if(!isset($input['item_name']))
+	{
+		return array("status" => 1, "error" => "Missing Item Name");
+	}
+	if(!isset($input['item_price']))
+	{
+		return array("status" => 1, "error" => "Missing Item Price");
+	}
+	if(!isset($input['item_desc']))
+	{
+		return array("status" => 1, "error" => "Missing Item Description");
+	}
+	$mods = json_decode($input['item_mods']);
+	$res->close();
+	$res = mysqli_query($db, "CALL set_item_info(\"" . $_SESSION['rest_id'] . "\", \"" . $input['item_id'] .  "\", \"" . $input['item_name'] .  "\", \"" . $input['item_price'] .  
+			"\", \"" . $input['item_desc'] . "\")", MYSQLI_USE_RESULT);
+	$res->close();
+}
+function rest_get_my_items($db, $input)
+{
+	if(!isset($_SESSION['rest_id']))
+	{
+		return array("status" => 1, "error" => "Missing Restaurant ID");
+	}
+	$res = mysqli_query($db, "CALL get_restaurant_menu_items(\"" . $_SESSION['rest_id'] . "\")", MYSQLI_USE_RESULT);
+	$menu_items = array();
+	while ($row = $res->fetch_object()){
+        $menu_items[] = $row;
+    });
+	$res->close();
+    $db->next_result();
+	foreach($menu_items as &$item)
+	{
+		$m_id = $item['menu_item_id'];
+		$res = mysqli_query($db, "CALL get_item_mods(\"" . $m_id . "\")", MYSQLI_USE_RESULT);
+		$item_mods = array();
+		while ($row = $res->fetch_object()){
+			$item_mods[] = $row;
+		});
+		$item['mods'] = $item_mods;
+	}
+	return array("status" => 0, "result" => $menu_items);	
+}
+
 if(in_array($mode, $possible_modes))
 {
 	// Process Request
@@ -91,8 +175,7 @@ if(in_array($mode, $possible_modes))
 		echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
 		exit;
 	}
-	
-	$result = $mode($link, $_REQUEST);
+
 	echo 1;
 }
 else
