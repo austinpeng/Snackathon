@@ -121,9 +121,9 @@ desired effect
       <ul class="sidebar-menu">
         <li class="header">Restaurant Information</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="starter.html"><i class="fa fa-link"></i> <span>Overview</span></a></li>
+        <li><a href="starter.html"><i class="fa fa-link"></i> <span>Overview</span></a></li>
         <li><a href="orders.html"><i class="fa fa-link"></i> <span>Orders</span></a></li>
-		<li><a href="menu-editor.html"><i class="fa fa-link"></i> <span>Menu Editor</span></a></li>
+		<li  class="active"><a href="menu-editor.html"><i class="fa fa-link"></i> <span>Menu Editor</span></a></li>
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -135,71 +135,21 @@ desired effect
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Restaurant Overview
-        <small>Find Information and Statistics</small>
+        Edit Menu
+        <small>Add/Change/Delete Menu Items</small>
       </h1>
     </section>
 
     <!-- Main content -->
     <section class="content">
-<div class="row">
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-aqua">
-            <div class="inner">
-              <h3>150</h3>
-
-              <p>New Orders</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-bag"></i>
-            </div>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-green">
-            <div class="inner">
-              <h3>150</h3>
-
-              <p>Orders Today</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-bag"></i>
-            </div>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-yellow">
-            <div class="inner">
-              <h3>$150</h3>
-
-              <p>Made in Revenue Today</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-bag"></i>
-            </div>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-		  <div class="small-box bg-red">
-          <div class="inner">
-              <h3>$150</h3>
-
-              <p>Made in Revenue This Week</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-bag"></i>
-            </div>
-          </div>
-		  </div>
-        </div>
-        <!-- ./col -->
+	  <div class="row">
+       <div class="col-md-9">
+	   <h1> Appitizers <button onclick="javascript:additem(0);" class="btn btn-flat"> Add Item </button> </h1>
+	   <h1> Entrees    <button onclick="javascript:additem(1);" class="btn btn-flat"> Add Item </button> </h1>
+	   <h1> Desserts    <button onclick="javascript:additem(2);" class="btn btn-flat"> Add Item </button> </h1>
+	   </div>
+	   <div class="col-md-3">
+	   </div>
       </div>
       <!-- Your Page Content Here -->
 
