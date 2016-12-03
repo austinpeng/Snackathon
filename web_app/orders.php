@@ -58,7 +58,7 @@ desired effect
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="starter.html" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>S</b>TH</span>
       <!-- logo for regular state and mobile devices -->
@@ -210,7 +210,13 @@ desired effect
                                 <th class="tabledit-toolbar-column"></th></tr>
                             </thead>
                             <tbody>
-                                <tr id="2"><td><span class="tabledit-span tabledit-identifier">2</span><input class="tabledit-input tabledit-identifier" type="hidden" name="id" value="2" disabled=""></td>
+<tr id="2"><td><span class="tabledit-span tabledit-identifier">1</span><input class="tabledit-input tabledit-identifier" type="hidden" name="id" value="2" disabled=""></td>
+<td class="tabledit-view-mode"><span class="tabledit-span">Snackathon Hackers</span><input class="tabledit-input form-control input-sm" type="text" name="nickname" value="Scot Narcisse" style="display: none;" disabled=""></td>
+<td class="tabledit-view-mode"><span class="tabledit-span">3</span><input class="tabledit-input form-control input-sm" type="text" name="firstname" value="3" style="display: none;" disabled=""></td>
+<td class="tabledit-view-mode"><span class="tabledit-span">27.27</span><input class="tabledit-input form-control input-sm" type="text" name="lastname" value="27.27" style="display: none;" disabled=""></td>                                                               </tr>
+
+
+<tr id="2"><td><span class="tabledit-span tabledit-identifier">2</span><input class="tabledit-input tabledit-identifier" type="hidden" name="id" value="2" disabled=""></td>
 <td class="tabledit-view-mode"><span class="tabledit-span">Scot Narcisse</span><input class="tabledit-input form-control input-sm" type="text" name="nickname" value="Scot Narcisse" style="display: none;" disabled=""></td>
 <td class="tabledit-view-mode"><span class="tabledit-span">3</span><input class="tabledit-input form-control input-sm" type="text" name="firstname" value="3" style="display: none;" disabled=""></td>
 <td class="tabledit-view-mode"><span class="tabledit-span">27.27</span><input class="tabledit-input form-control input-sm" type="text" name="lastname" value="27.27" style="display: none;" disabled=""></td>                                                               </tr>
@@ -2107,10 +2113,30 @@ if (typeof jQuery === 'undefined') {
 	$('#orders').Tabledit({
     url: '../api/webapi.php',
     columns: {
-        identifier: [0, 'id'],
-        editable: [[1, 'Customer Name'], [2, '# of Items'], [3, 'Order Price']]
+        identifier: [0, 'Order ID'],
+        editable: [[1, 'Customer Name'], [2, '# Of Items'], [3, 'Order Price']]
+    }});
+/*$('#orders').Tabledit({
+    url: '../api/webapi.php',
+    //rowIdentifier: 'data-id',
+    editButton: false,
+    restoreButton: false,
+    buttons: {
+        delete: {
+            class: 'btn btn-sm btn-danger',
+            html: '<span class="glyphicon glyphicon-trash"></span> &nbsp DELETE',
+            action: 'delete'
+        },
+        confirm: {
+            class: 'btn btn-sm btn-default',
+            html: 'Are you sure?'
+        }
+    },
+    columns: {
+        identifier: [0, 'Order ID'],
+        editable: [[1, 'Customer Name'], [2, '# Of Items'], [3, 'Order Price']]
     }
-});
+});*/
 </script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the

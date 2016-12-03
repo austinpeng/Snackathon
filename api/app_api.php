@@ -17,11 +17,16 @@ function login_app($db, $input)
 	{
 		return array("status" => 1, "error" => "Missing Password");
 	}
-	$res = mysqli_query($db, "CALL login(\"" . $input['username'] . "\", \""  . $input['password'] . "\")"));
-	while ($row = $res->fetch_object()){
-        $row = $row;
-    });
-	return array("status" => 0, "result" => $row);
+	$res = mysqli_query($db, "SELECT * FROM users WHERE username = \"" . $input['username'] . "\";");
+	$row = $res->fetch_object();
+	$row = json_decode(json_encode($row), True);
+	if(md5($row['password_salt'] . $input['password']) == $row['password_hash']){
+		$_SESSION['realname'] = $row['real_name'];
+		return array("status" => 0, "result" => 'localhost/web_app/starter.html');
+		
+	}
+	else
+		return array("status" => 1, "result" => 'Incorrect Username/Password');
 	
 }
 function logout_app($db, $input)
@@ -35,7 +40,7 @@ function logout_app($db, $input)
 	{
 		return array("status" => 1, "error" => "Missing Username");
 	}
-	$res = mysqli_query($db, "CALL clear_user_session(\"" . $input['username'] . "\", \""  . $input['current_auth'] . "\")"));
+	$res = mysqli_query($db, "CALL clear_user_session(\"" . $input['username'] . "\", \""  . $input['current_auth'] . "\")");
 	return array("status" => 0, "result" => array());
 }
 function get_restaurants($db, $input)
@@ -44,7 +49,7 @@ function get_restaurants($db, $input)
 	$rests = array();
 	while ($row = $res->fetch_object()){
         $rests[] = $row;
-    });
+    };
 	$result->close();
     $db->next_result();
 	return array("status" => 0, "result" => $rests);
@@ -60,7 +65,7 @@ function get_restaurant_info($db, $input)
 	$menu_items = array();
 	while ($row = $res->fetch_object()){
         $menu_items[] = $row;
-    });
+    };
 	$result->close();
     $db->next_result();
 	foreach($menu_items as &$item)
@@ -70,7 +75,7 @@ function get_restaurant_info($db, $input)
 		$item_mods = array();
 		while ($row = $res->fetch_object()){
 			$item_mods[] = $row;
-		});
+		};
 		$item['mods'] = $item_mods;
 	}
 	return array("status" => 0, "result" => $menu_items);
@@ -148,7 +153,7 @@ function rest_get_my_items($db, $input)
 	$menu_items = array();
 	while ($row = $res->fetch_object()){
         $menu_items[] = $row;
-    });
+    };
 	$res->close();
     $db->next_result();
 	foreach($menu_items as &$item)
@@ -158,7 +163,7 @@ function rest_get_my_items($db, $input)
 		$item_mods = array();
 		while ($row = $res->fetch_object()){
 			$item_mods[] = $row;
-		});
+		};
 		$item['mods'] = $item_mods;
 	}
 	return array("status" => 0, "result" => $menu_items);	
@@ -175,8 +180,8 @@ if(in_array($mode, $possible_modes))
 		echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
 		exit;
 	}
-
-	echo 1;
+	$return = $mode($link, $_REQUEST);
+	echo json_encode($return);
 }
 else
 {
